@@ -1,42 +1,49 @@
 package visual;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 
 public class Visual extends JFrame {
+    public Visual() {
+        setTitle("Gestión del Zoológico");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
 
-	private JPanel contentPane;
+        JTabbedPane tabbedPane = new JTabbedPane();
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Visual frame = new Visual();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+        // Pestañas con tablas y botones
+        String[] p1 = {"Nombre", "Cargo", "Salario"};
+        String[] p2 = {"Especie", "Edad", "Hábitat"};
+        String[] p3 = {"Nombre", "Visitas", "Miembro VIP"};
+        tabbedPane.addTab("Empleados", crearPanel(p1, "Añadir Empleado"));
+        tabbedPane.addTab("Animales", crearPanel(p2, "Añadir Animal"));
+        tabbedPane.addTab("Clientes", crearPanel(p3, "Añadir Cliente"));
 
-	/**
-	 * Create the frame.
-	 */
-	public Visual() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
-	}
+        add(tabbedPane);
+    }
 
+    private JPanel crearPanel(String[] columnas, String botonTexto) {
+        JPanel panel = new JPanel(new BorderLayout());
+
+        // Tabla con columnas
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        JTable tabla = new JTable(modelo);
+        panel.add(new JScrollPane(tabla), BorderLayout.CENTER);
+
+        // Panel de botones
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JButton btnAgregar = new JButton(botonTexto);
+        JButton btnEditar = new JButton("Editar");
+        JButton btnEliminar = new JButton("Eliminar");
+
+        panelBotones.add(btnAgregar);
+        panelBotones.add(btnEditar);
+        panelBotones.add(btnEliminar);
+
+        panel.add(panelBotones, BorderLayout.SOUTH);
+
+        return panel;
+    }
 }
